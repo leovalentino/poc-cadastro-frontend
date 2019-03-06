@@ -1,0 +1,42 @@
+
+button {
+  font-size: 16px;
+}
+
+label {
+  color: rgb(102,102,102);
+}
+
+h5 {
+  font-weight: bold;
+  color: rgb(102,102,102);
+}
+
+hr {
+  border-color: #1E90FF;
+}
+
+table {
+    color: rgb(102,102,102);
+    border-collapse: collapse;
+}
+
+table, td, th {
+  border: 1px solid rgb(102,102,102);
+}
+
+.subtitulo {
+  background-color: #e6e6e6;
+  height: 35px;
+  padding-top: 5px;
+  padding-left: 10px;
+}
+
+.main-footer {
+  background-color: #0E4B79;
+  color: white;
+}
+
+.msgCampoInvalido {
+  color: #E53F3F;
+}

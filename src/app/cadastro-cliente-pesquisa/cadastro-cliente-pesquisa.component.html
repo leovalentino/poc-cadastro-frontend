@@ -1,0 +1,93 @@
+<div class="container py-3">
+  <h5 class="subtitulo">PESQUISA DE CLIENTE</h5>
+  <form>
+    <h5>Filtros</h5>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="nome">Nome</label>
+        <input type="text" class="form-control" maxlength="100" minlength="3" [(ngModel)]="cliente.nome" name="nome"
+          [ngClass]="{'is-invalid':nome.invalid}" #nome="ngModel" specialIsAlphaNumeric (keyup)="pesquisar()"
+          placeholder="Nome">
+      </div>
+      <div class="form-group col-md-3">
+        <label for="cpf">*CPF</label>
+        <input type="text" class="form-control" name="cpf" maxlength="14" placeholder="000.000.000-00"
+          [(ngModel)]="cliente.cpf" mask="000.000.000-00" (keyup)="pesquisarPorEventoCPF()" #cpf="ngModel" cpfValidador
+          required />
+        <div class="invalid-feedback" *ngIf="cpf.errors?.cpfValidador">
+          <div>Cpf inválido</div>
+        </div>
+      </div>
+      <div class="form-group col-md-2">
+        <label class="invisible" for="email">Adicionar</label>
+        <button class="form-control btn btn-outline-success"
+          [routerLink]="['/cadastroclientecrud']" *ngIf="isUsuarioAdministrador">Adicionar</button>
+      </div>
+    </div>
+
+    <h5>Resultado</h5>
+
+    <div class="container">
+      <div class="table-responsive">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th class="text-center" scope="col">Nome</th>
+              <th class="text-center" scope="col">CPF</th>
+              <th class="text-center" scope="col">Telefones</th>
+              <th class="text-center" scope="col">E-mails</th>
+              <th  class="text-center" scope="col">Ação</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let cliente of listaCliente">
+              <td class="text-center">{{cliente.nome}}</td>
+              <td class="text-center">{{cliente.cpf | mask:'000.000.000-00'}}</td>
+              <td class="text-center">
+                <ul>
+                  <li *ngFor="let telefone of cliente.telefones">{{telefone.numero}}</li>
+                </ul>
+              </td>
+              <td class="text-center">
+                <ul>
+                  <li *ngFor="let email of cliente.emails">{{email.enderecoEmail}}</li>
+                </ul>
+              </td>
+              <td class="text-center">
+                <a class="btn" (click)="irParaTelaAlteracao(cliente)" *ngIf="isUsuarioAdministrador">
+                  <i class="fa fa-pencil mr-2" aria-hidden="true"></i>
+                </a>
+                <a class="btn" data-toggle="modal" data-target="#exampleModal" (click)="prepararExclusao(cliente)" *ngIf="isUsuarioAdministrador">
+                  <i class="fa fa-trash mr-2" aria-hidden="true"></i>
+                </a>
+                <a class="btn" (click)="irParaTelaVisuzalizacao(cliente)">
+                  <i class="fa fa-search-plus" aria-hidden="true"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Deseja realmente excluir o item selecionado?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="excluir()">Sim</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+      </div>
+    </div>
+  </div>
+</div>

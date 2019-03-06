@@ -1,0 +1,44 @@
+<div *ngIf="isLoggedIn; else loggedOut">
+  Logado como {{roles}}.
+  <a [routerLink]="['/cadastroclientepesquisa']">
+    <p>Acessar aplicação</p>
+  </a>
+</div>
+
+<ng-template #loggedOut>
+  <div class="container p-4 d-flex justify-content-center">
+    <div class="card p-4 col-md-5 mx-auto">
+
+      <h5 class="subtitulo">LOGIN</h5>
+      <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+        <div class="form-group">
+          <label for="login">Login</label>
+          <input type="text" class="form-control" name="login" [(ngModel)]="form.login" #login="ngModel"
+            required placeholder="Login"/>
+          <div *ngIf="f.submitted && login.invalid">
+            <div *ngIf="login.errors.required" class="msgCampoInvalido">O Campo login é obrigatório</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="senha">Senha</label>
+          <input type="password" class="form-control" name="senha" [(ngModel)]="form.senha" #senha="ngModel"
+            required minlength="6" placeholder="Senha"/>
+          <div *ngIf="f.submitted && senha.invalid">
+            <div *ngIf="senha.errors.required" class="msgCampoInvalido">O campo Senha é obrigatório</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary form-control">Login</button>
+          <div *ngIf="f.submitted && isLoginFailed" class="alert alert-danger">
+            Login falhou: {{errorMessage}}
+          </div>
+        </div>
+      </form>
+      <hr />
+      <p>Ainda não tem conta?</p>
+      <a href="signup" class="btn btn-success">Registrar</a>
+
+    </div><!-- /card-container -->
+  </div><!-- /container -->
+
+</ng-template>

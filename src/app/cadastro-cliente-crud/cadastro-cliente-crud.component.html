@@ -1,0 +1,172 @@
+<div class="container py-3">
+  <h5 class="subtitulo">CADASTRO DE CLIENTE</h5>
+  <form name="form" #f="ngForm" novalidate>
+    <h5>Dados Pessoais</h5>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="nome">*Nome Completo</label>
+        <input type="text" class="form-control" name="nome" maxlength="100" minlength="3" placeholder="Nome Completo"
+          [(ngModel)]="cliente.nome" [ngClass]="{'is-invalid':f.submitted && nome.invalid}" #nome="ngModel" [disabled]="telaSomenteVisualizacao()"
+          specialIsAlphaNumeric required />
+        <div class="invalid-feedback">
+          <div>O campo Nome Completo é obrigatório</div>
+        </div>
+        <div class="invalid-feedback" *ngIf="nome.errors?.minlength">
+          <div>Você deve informar ao menos três letras</div>
+        </div>
+      </div>
+      <div class="form-group col-md-3">
+        <label for="cpf">*CPF</label>
+        <input type="text" class="form-control" name="cpf" maxlength="14" placeholder="000.000.000-00"
+          [(ngModel)]="cliente.cpf" [ngClass]="{'is-invalid':f.submitted && cpf.invalid}" mask="000.000.000-00"
+          #cpf="ngModel" cpfValidador required [disabled]="telaSomenteVisualizacao()"/>
+        <div class="invalid-feedback" *ngIf="cpf.errors?.required">
+          <div>O campo CPF é obrigatório</div>
+        </div>
+        <div class="invalid-feedback" *ngIf="cpf.errors?.cpfValidador">
+          <div>Cpf inválido</div>
+        </div>
+      </div>
+      <div class="form-group col-md-3">
+        <label for="cep">*CEP</label>
+        <input type="text" class="form-control" name="cep" mask="00.000-000" [(ngModel)]="cliente.endereco.cep" (keyup)="pesquisarPorCep()"
+          placeholder="00.000-00" [ngClass]="{'is-invalid':f.submitted && cep.invalid}" #cep="ngModel" required [disabled]="telaSomenteVisualizacao()">
+        <div class="invalid-feedback">
+          <div>O campo CEP é obrigatório</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-3">
+        <label for="logradouro">*Logradouro</label>
+        <input type="text" class="form-control" name="logradouro" [(ngModel)]="cliente.endereco.logradouro"
+          placeholder="Logradouro" [ngClass]="{'is-invalid':f.submitted && logradouro.invalid}" #logradouro="ngModel"
+          required [disabled]="telaSomenteVisualizacao()">
+        <div class="invalid-feedback">
+          <div>O campo Logradouro é obrigatório</div>
+        </div>
+      </div>
+      <div class="form-group col-md-2">
+        <label for="cep">Complemento</label>
+        <input type="text" maxlength="25" class="form-control" name="complemento" [(ngModel)]="cliente.endereco.complemento"
+          placeholder="Complemento" [ngClass]="{'is-invalid':f.submitted && complemento.invalid}"
+          #complemento="ngModel" [disabled]="telaSomenteVisualizacao()">
+      </div>
+      <div class="form-group col-md-3">
+        <label for="cep">*Bairro</label>
+        <input type="text" class="form-control" name="bairro" [(ngModel)]="cliente.endereco.bairro" placeholder="Bairro"
+          [ngClass]="{'is-invalid':f.submitted && bairro.invalid}" #bairro="ngModel" required [disabled]="telaSomenteVisualizacao()">
+        <div class="invalid-feedback">
+          <div>O campo Bairro é obrigatório</div>
+        </div>
+      </div>
+      <div class="form-group col-md-1">
+        <label for="nome">*UF</label>
+        <select type="select" class="form-control" name="uf" [(ngModel)]="cliente.endereco.uf"
+          [ngClass]="{'is-invalid':f.submitted && uf.invalid}" #uf="ngModel" required [disabled]="telaSomenteVisualizacao()">
+          <option *ngFor="let uf of arrayUF">{{uf}}</option>
+        </select>
+        <div class="invalid-feedback">
+          <div>O campo UF é obrigatório</div>
+        </div>
+      </div>
+      <div class="form-group col-md-3">
+        <label for="cidade">*Cidade</label>
+        <input type="text" class="form-control" name="cidade" [(ngModel)]="cliente.endereco.cidade" placeholder="Cidade"
+          [ngClass]="{'is-invalid':f.submitted && cidade.invalid}" #cidade="ngModel" required [disabled]="telaSomenteVisualizacao()">
+        <div class="invalid-feedback">
+          <div>O campo Cidade é obrigatório</div>
+        </div>
+      </div>
+    </div>
+
+    <h5>Contato</h5>
+
+    <div class="form-row">
+      <div class="form-group col-md-3">
+        <label for="cep">*Telefone</label>
+        <input type="text" class="form-control" name="telefone" mask="{{mascaraTelefone | async}}"
+          [(ngModel)]="numeroTelefone" (ngModelChange)="mudarMascaraTel()" placeholder="(00)0000-0000"
+          [ngClass]="{'is-invalid':numTelefoneisVazio}" #telefone="ngModel" [disabled]="telaSomenteVisualizacao()">
+        <div class="invalid-feedback">
+          <div>O campo Telefone é obrigatório</div>
+        </div>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="nome">*Tipo Telefone</label>
+        <div class="input-group mb-3">
+          <select type="select" class="form-control" name="tipoTel" [(ngModel)]="tipoTelefone"
+            [ngClass]="{'is-invalid':f.submitted && tipoTel.invalid}" #tipoTel="ngModel" (change)="mudarMascaraTel()"
+            required [disabled]="telaSomenteVisualizacao()">
+            <option *ngFor="let tipoTelefone of listaTipoTelefone">{{tipoTelefone}}</option>
+          </select >
+          <div class="input-group-append" [hidden]="telaSomenteVisualizacao()">
+            <button type="button" (click)="adicionarTelefone()">Adicionar</button>
+            <div class="invalid-feedback">
+              <div>O campo Tipo Telefone é obrigatório</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="form-group col-md-5">
+        <label for="nome">*Telefones</label>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Telefone</th>
+              <th scope="col">Tipo</th>
+              <th *ngIf="telaAlteracao() ||  telaInclusao()" scope="col"></th>
+            </tr>
+            <tr *ngFor="let telefone of cliente.telefones">
+              <td *ngIf="telefone.tipoTelefone != 'CELULAR'"scope="col">{{telefone.numero | mask:'(00)0000-0000'}}</td>
+              <td *ngIf="telefone.tipoTelefone == 'CELULAR'" scope="col">{{telefone.numero | mask:'(00)00000-0000'}}</td>
+              <td scope="col">{{telefone.tipoTelefone}}</td>
+              <td class="text-center" *ngIf="telaAlteracao() || telaInclusao()" scope="col"><i class="fa fa-trash mr-2" (click)="removeTelefone()" aria-hidden="true"></i></td>
+            </tr>
+          </thead>
+          <p class="msgCampoInvalido" *ngIf="listaTelefoneVazia && f.submitted">Você deve informar ao menos um telefone
+          </p>
+        </table>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-5">
+        <label for="email">*E-mail</label>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control mr-1" name="email" [(ngModel)]="emailInput" placeholder="E-mail"
+            [ngClass]="{'is-invalid':emailIsVazio}" #email="ngModel" maxlength="30" [disabled]="telaSomenteVisualizacao()">
+          <div class="input-group-append" [hidden]="telaSomenteVisualizacao()">
+            <button type="button" (click)="adicionarEmail()">Adicionar</button>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-md-5">
+        <label for="nome">*E-mails</label>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Email</th>
+              <th *ngIf="telaAlteracao() || telaInclusao()" scope="col"></th>
+            </tr>
+            <tr *ngFor="let email of cliente.emails">
+              <td scope="col">{{email.enderecoEmail}}</td>
+              <td *ngIf="telaAlteracao() || telaInclusao()" class="text-center" scope="col"><i class="fa fa-trash mr-2" (click)="removeEmail()" aria-hidden="true"></i></td>
+            </tr>
+          </thead>
+          <p class="msgCampoInvalido" *ngIf="listaTelefoneVazia && f.submitted">Você deve informar ao menos um e-mail
+          </p>
+        </table>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <button class="btn btn-outline-primary mr-2" [routerLink]="['/cadastroclientepesquisa']">Voltar</button>
+        <button *ngIf="telaInclusao()" class="btn btn-outline-primary" (click)="clickIncluir()" >Incluir</button>
+        <button *ngIf="telaAlteracao()" class="btn btn-outline-primary" (click)="clickAlterar()" >Atualizar</button>
+      </div>
+    </div>
+  </form>
+</div>
