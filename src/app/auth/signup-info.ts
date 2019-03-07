@@ -10,6 +10,6 @@ export class SignUpInfo {
         this.login = login;
         this.email = email;
         this.senha = senha;
-        this.role = ['administrador'];
+        this.role = ['funcionario'];
     }
 }

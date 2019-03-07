@@ -35,14 +35,16 @@ export class CadastroClientePesquisaComponent implements OnInit {
         if (role === 'ADMINISTRADOR') {
           this.authority = 'administrador';
           return false;
-        } else if (role === 'ROLE_PM') {
-          this.authority = 'pm';
-          return false;
         }
         this.authority = 'funcionario';
         return true;
       });
     }
+  }
+
+  logout() {
+    this.tokenStorage.signOut();
+    this.router.navigate(['/']);
   }
 
   usuarioNaoPossuiPermissaoAdministrador() {

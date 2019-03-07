@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'app/auth/auth.service';
 import { SignUpInfo } from 'app/auth/signup-info';
+import { Router } from '@angular/router';
+import { ToastrManager } from 'ng6-toastr-notifications';
 
 @Component({
   selector: 'emrede-register',
@@ -14,7 +16,7 @@ export class RegisterComponent implements OnInit {
   isSignUpFailed = false;
   errorMessage = '';
  
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router, private toastr: ToastrManager) { }
  
   ngOnInit() { }
  
@@ -32,6 +34,8 @@ export class RegisterComponent implements OnInit {
         console.log(data);
         this.isSignedUp = true;
         this.isSignUpFailed = false;
+        this.toastr.successToastr('Registro efetuado com sucesso.','Sucesso');
+        this.router.navigate(['/']);
       },
       error => {
         console.log(error);

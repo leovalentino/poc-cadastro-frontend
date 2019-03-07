@@ -4,7 +4,7 @@ import { Directive, HostListener, ElementRef, Input } from '@angular/core';
 })
 export class RemoveCaracteresEspeciaisDirective {
 
-  regexStr = '^[a-zA-Z0-9_]*$';
+  regexStr = '^[a-zA-Z0-9_ áàãâéíóôõú]*$';
   @Input() isAlphaNumeric: boolean;
 
   constructor(private el: ElementRef) { }
@@ -21,7 +21,7 @@ export class RemoveCaracteresEspeciaisDirective {
   validateFields(event) {
     setTimeout(() => {
 
-      this.el.nativeElement.value = this.el.nativeElement.value.replace(/[^A-Za-z ]/g, '').replace(/\s/g, '');
+      this.el.nativeElement.value = this.el.nativeElement.value.replace(/[^A-Za-z áàãâéíóôõú]/g, '');
       event.preventDefault();
 
     }, 100)

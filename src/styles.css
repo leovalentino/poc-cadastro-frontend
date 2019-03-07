@@ -40,3 +40,7 @@ table, td, th {
 .msgCampoInvalido {
   color: #E53F3F;
 }
+
+i {
+  cursor: pointer;
+}

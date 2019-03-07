@@ -15,6 +15,7 @@ export class CadastroClienteCrudComponent implements OnInit {
   arrayUF: string[] = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI',
     'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'];
 
+  EMAIL_REGEXP = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   listaTipoTelefone = [];
   listaTelefone: TelefoneModel[] = [];
   listaEmail: EmailModel[] = [];
@@ -86,7 +87,7 @@ export class CadastroClienteCrudComponent implements OnInit {
   }
 
   clickIncluir() {
-    if (this.formulario.valid) {
+    if (this.formularioValido()) {
       this.service.salvar(this.cliente).subscribe(
         mensagem => {
           this.toastr.successToastr(mensagem, 'Sucesso');
@@ -97,7 +98,7 @@ export class CadastroClienteCrudComponent implements OnInit {
   }
 
   clickAlterar() {
-    if (this.formulario.valid) {
+    if (this.formularioValido()) {
       this.service.atualizar(this.cliente).subscribe(
         mensagem => {
           this.toastr.successToastr(mensagem, 'Sucesso');
@@ -105,6 +106,10 @@ export class CadastroClienteCrudComponent implements OnInit {
         }
       );
     }
+  }
+
+  private formularioValido() {
+    return this.formulario.valid && !this.listaEmailVazia() && !this.listaTelefoneVazia();
   }
 
   mudarMascaraTel() {
@@ -139,7 +144,8 @@ export class CadastroClienteCrudComponent implements OnInit {
   }
 
   adicionarEmail() {
-    if (this.emailInput != "" && this.emailInput != null) {
+    
+    if (this.emailInput != "" && this.emailInput != null && this.EMAIL_REGEXP.test(this.emailInput)) {
       let emailModel: EmailModel = new EmailModel();
       emailModel.enderecoEmail = this.emailInput;
       this.cliente.emails.push(emailModel);
@@ -159,7 +165,7 @@ export class CadastroClienteCrudComponent implements OnInit {
   }
 
   verificarCampoEmail() {
-    if (this.emailInput != "" && this.emailInput != null) {
+    if (this.emailInput != "" && this.emailInput != null && this.EMAIL_REGEXP.test(this.emailInput)) {
       this.emailIsVazio = false;
     } else {
       this.emailIsVazio = true;
@@ -167,11 +173,11 @@ export class CadastroClienteCrudComponent implements OnInit {
   }
 
   listaTelefoneVazia() {
-    return this.listaTelefone == null || this.listaTelefone.length < 1;
+    return this.cliente.telefones == null || this.cliente.telefones.length < 1;
   }
 
   listaEmailVazia() {
-    return this.listaEmail == null || this.listaEmail.length < 1;
+    return this.cliente.emails == null || this.cliente.emails.length < 1;
   }
 
   telaSomenteVisualizacao() {

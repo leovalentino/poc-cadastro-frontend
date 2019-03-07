@@ -1,7 +1,11 @@
 <div class="container py-3">
   <h5 class="subtitulo">PESQUISA DE CLIENTE</h5>
   <form>
-    <h5>Filtros</h5>
+
+    <div class="d-flex">
+      <h5 class="p-2">Filtros</h5>
+      <a  class="ml-auto p-2" href=""><h5 (click)="logout()">Sair</h5></a>
+    </div>
 
     <div class="form-row">
       <div class="form-group col-md-6">
@@ -21,8 +25,8 @@
       </div>
       <div class="form-group col-md-2">
         <label class="invisible" for="email">Adicionar</label>
-        <button class="form-control btn btn-outline-success"
-          [routerLink]="['/cadastroclientecrud']" *ngIf="isUsuarioAdministrador">Adicionar</button>
+        <button class="form-control btn btn-outline-success" [routerLink]="['/cadastroclientecrud']"
+          *ngIf="isUsuarioAdministrador">Adicionar</button>
       </div>
     </div>
 
@@ -37,7 +41,7 @@
               <th class="text-center" scope="col">CPF</th>
               <th class="text-center" scope="col">Telefones</th>
               <th class="text-center" scope="col">E-mails</th>
-              <th  class="text-center" scope="col">Ação</th>
+              <th class="text-center" scope="col">Ação</th>
             </tr>
           </thead>
           <tbody>
@@ -46,7 +50,8 @@
               <td class="text-center">{{cliente.cpf | mask:'000.000.000-00'}}</td>
               <td class="text-center">
                 <ul>
-                  <li *ngFor="let telefone of cliente.telefones">{{telefone.numero}}</li>
+                  <li *ngFor="let telefone of cliente.telefones">{{telefone.numero | mask:telefone.mascaraTelefone}}
+                  </li>
                 </ul>
               </td>
               <td class="text-center">
@@ -58,8 +63,9 @@
                 <a class="btn" (click)="irParaTelaAlteracao(cliente)" *ngIf="isUsuarioAdministrador">
                   <i class="fa fa-pencil mr-2" aria-hidden="true"></i>
                 </a>
-                <a class="btn" data-toggle="modal" data-target="#exampleModal" (click)="prepararExclusao(cliente)" *ngIf="isUsuarioAdministrador">
-                  <i class="fa fa-trash mr-2" aria-hidden="true"></i>
+                <a class="btn" data-toggle="modal" data-target="#modalExclusao" (click)="prepararExclusao(cliente)"
+                  *ngIf="isUsuarioAdministrador">
+                  <i class="fa fa-trash mr-2 pointer" aria-hidden="true"></i>
                 </a>
                 <a class="btn" (click)="irParaTelaVisuzalizacao(cliente)">
                   <i class="fa fa-search-plus" aria-hidden="true"></i>
@@ -74,7 +80,7 @@
   </form>
 </div>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="modalExclusao" tabindex="-1" role="dialog" aria-labelledby="modalExclusaoLabel"
   aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">

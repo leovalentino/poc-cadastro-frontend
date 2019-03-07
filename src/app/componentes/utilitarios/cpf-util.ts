@@ -5,6 +5,7 @@ export class CpfCnpjUtil {
 
     public static validarCpf(cpfAvalidar: string): boolean {
         if (cpfAvalidar == null) return false;
+        if (this.digitosIguais(cpfAvalidar)) return false;
         let cpf = cpfAvalidar.replace(/\D+/g,'');
         if (cpf.length != 11) return false;
         let digito1 = this.calcularDigito(cpf.substring(0, 9), this.pesoCpf);
@@ -29,5 +30,18 @@ export class CpfCnpjUtil {
         }
         soma = 11 - soma % 11;
         return soma > 9 ? 0 : soma;
+    }
+
+    private static digitosIguais(cpf: string) {
+        return (cpf == '00000000000' ||
+                cpf == '11111111111' ||
+                cpf == '22222222222' ||
+                cpf == '33333333333' ||
+                cpf == '44444444444' ||
+                cpf == '55555555555' ||
+                cpf == '66666666666' ||
+                cpf == '77777777777' ||
+                cpf == '88888888888' ||
+                cpf == '99999999999')
     }
 }

@@ -28,11 +28,8 @@ export class TelefoneModel {
 
     tipoTelefone: string;
     numero: string;
-    _mascaraTelefone: string;
-
-    get mascaraTelefone(): string {
-        return this.tipoTelefone == 'CELULAR' ? '(00)00000-0000' : '(00)00000-0000'
-    }
+    mascaraTelefone: string;
+    
 }
 
 export class EmailModel {

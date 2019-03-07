@@ -1,8 +1,3 @@
-export const COD_VINCULO_FUNCIONAL = 0;
-export const COD_VINCULO_BOLSA = 1;
-export const COD_VINCULO_TERCEIROS = 2;
-export const COD_VINCULO_ESTAGIO = 3;
-
 export const TELA_INCLUSAO = 'INCLUSAO';
 export const TELA_ALTERACAO = 'ALTERACAO';
 export const TELA_VISUALIZACAO = 'VISUALIZACAO';
