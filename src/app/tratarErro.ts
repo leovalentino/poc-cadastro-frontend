@@ -13,14 +13,14 @@ export class TratarErro implements OnInit {
   }
 
   handleError(error: HttpErrorResponse | any) {
-    let errorMessage: string
-    console.log(error)
-    if (error instanceof HttpErrorResponse) {
-      errorMessage = `Erro ${error.status} ao acessar a URL ${error.url} - ${error.statusText}`;
-      return throwError(this.toast.errorToastr(error.message, 'Erro inesperado'))
-    } else {
-      errorMessage = error.toString()
+    console.log(error);
+
+    if (error.status == 401) {
+      return throwError(this.toast.errorToastr(error.error.message, 'Usuário sem autorização'))
+    } else if (error.status == 503) {
+      return throwError(this.toast.errorToastr(error.error.message, 'Serviço indisponível'))
     }
+
     return throwError(this.toast.errorToastr(error.error.message, 'Erro inesperado'))
   }
 

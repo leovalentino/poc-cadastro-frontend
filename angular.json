@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "em-rede": {
+    "poc": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -53,18 +53,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "em-rede:build"
+            "browserTarget": "poc:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "em-rede:build:production"
+              "browserTarget": "poc:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "em-rede:build"
+            "browserTarget": "poc:build"
           }
         },
         "test": {
@@ -103,7 +103,7 @@
         }
       }
     },
-    "em-rede-e2e": {
+    "poc-e2e": {
       "root": "e2e",
       "sourceRoot": "e2e",
       "projectType": "application",
@@ -112,7 +112,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "em-rede:serve"
+            "devServerTarget": "poc:serve"
           }
         },
         "lint": {
@@ -127,7 +127,7 @@
       }
     }
   },
-  "defaultProject": "em-rede",
+  "defaultProject": "poc",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "emrede",
