@@ -16,7 +16,7 @@
           <input type="text" class="form-control" name="login" [(ngModel)]="form.login" #login="ngModel"
             required placeholder="Login"/>
           <div *ngIf="f.submitted && login.invalid">
-            <div *ngIf="login.errors.required" class="msgCampoInvalido">O Campo login é obrigatório</div>
+            <div *ngIf="login.errors.required" class="msgCampoInvalido">O Campo Login é obrigatório</div>
           </div>
         </div>
         <div class="form-group">

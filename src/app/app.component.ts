@@ -19,10 +19,7 @@ export class AppComponent implements OnInit {
         if (role === 'ADMINISTRADOR') {
           this.authority = 'administrador';
           return false;
-        } else if (role === 'ROLE_PM') {
-          this.authority = 'pm';
-          return false;
-        }
+         }
         this.authority = 'funcionario';
         return true;
       });
